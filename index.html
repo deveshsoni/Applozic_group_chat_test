@@ -65,6 +65,10 @@ function userFunc(uid, uname){
     loadOwnContacts : true, //set to true if you want to populate your own contact list (see Step 4 for reference)
     onInit : function(response) {
        if (response === "success") {
+			if(uid == 586){
+				$applozic.fn.applozic('loadGroupTab', 1433730);
+			}
+			else{
 			$applozic.fn.applozic('addGroupMember',{'groupId': 1433730,
                                          //use either groupId or clientGroupId
                                         'userId': uid,
@@ -74,6 +78,7 @@ function userFunc(uid, uname){
 					if(response === "success"){
 						$applozic.fn.applozic('loadGroupTab', 1433730); 
 					}
+				}
 					// login successful, perform your actions if any, for example: load contacts, getting unread message count, etc
        } else {
           // error in user login/register (you can hide chat button or refresh page)
