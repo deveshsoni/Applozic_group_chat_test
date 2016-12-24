@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Applozic Chat</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h2>Sign Up for Chat / Sign In</h2>
+  <form class="form-horizontal">
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="email">Enter ID:</label>
+      <div class="col-sm-6">
+        <input type="text" class="form-control" id="user_Id" placeholder="Enter ID">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="pwd">Enter Name:</label>
+      <div class="col-sm-6">
+        <input type="text" class="form-control" id="user_name" placeholder="Enter Name">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-6">
+        <button type="submit" class="btn btn-default" onclick="userFunc(document.getElementById('user_Id').value,document.getElementById('user_name').value); return false;">Submit</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script type="text/javascript">
+function userFunc(uid, uname){
+	 //alert("Hello " + uname);
+  (function(d, m){var s, h;
+  s = document.createElement("script");
+  s.type = "text/javascript";
+  s.async=true;
+    s.src="https://apps.applozic.com/sidebox.app";
+  h=document.getElementsByTagName('head')[0];
+  h.appendChild(s);
+  window.applozic=m;
+  m.init=function(t){m._globals=t;}})(document, window.applozic || {});
+
+  window.applozic.init({
+    appId: "1dc3ea1fc173d8754185cf8c40696b3f4",      //Get your application key from https://www.applozic.com
+    userId: uid,                     //Logged in user's id, a unique identifier for user
+    userName: uname,                 //User's display name
+    imageLink : '',                     //User's profile picture url
+    email : '',                         //optional
+    contactNumber: '',                  //optional, pass with internationl code eg: +16508352160
+    desktopNotification: true,
+    source: '6',                          // optional, WEB(1),DESKTOP_BROWSER(5), MOBILE_BROWSER(6)
+    notificationIconLink: 'https://www.applozic.com/favicon.ico',    //Icon to show in desktop notification, replace with your icon
+    authenticationTypeId: '1',          //1 for password verification from Applozic server and 0 for access Token verification from your server
+    accessToken: '',                    //optional, leave it blank for testing purpose, read this if you want to add additional security by verifying password from your server https://www.applozic.com/docs/configuration.html#access-token-url
+    locShare: true,
+    googleApiKey: "AIzaSyDKfWHzu9X7Z2hByeW4RRFJrD9SizOzZt4",   // your project google api key
+    googleMapScriptLoaded : false,   // true if your app already loaded google maps script
+    autoTypeSearchEnabled : true,     // set to false if you don't want to allow sending message to user who is not in the contact list
+    loadOwnContacts : true, //set to true if you want to populate your own contact list (see Step 4 for reference)
+    onInit : function(response) {
+       if (response === "success") {
+			$applozic.fn.applozic('addGroupMember',{'groupId': 1433730,
+                                         //use either groupId or clientGroupId
+                                        'userId': uid,
+                                        'role' :  3,  // (optional)  USER(0), ADMIN(1), MODERATOR(2), MEMBER(3)
+                                        'callback': function(response) {console.log(response);}
+                                        });
+					if(response === "success"){
+						$applozic.fn.applozic('loadGroupTab', 1433730); 
+					}
+					// login successful, perform your actions if any, for example: load contacts, getting unread message count, etc
+       } else {
+          // error in user login/register (you can hide chat button or refresh page)
+       }
+   },
+   contactDisplayName: function(otherUserId) {
+         //return the display name of the user from your application code based on userId.
+         return "";
+   },
+   contactDisplayImage: function(otherUserId) {
+         //return the display image url of the user from your application code based on userId.
+         return "";
+   },
+   onTabClicked: function(response) {
+         // write your logic to execute task on tab load
+         //   object response =  {
+         //    tabId : userId or groupId,
+         //    isGroup : 'tab is group or not'
+         //  }
+   }
+ });
+ }
+</script>
+</body>
+</html>
